@@ -1,0 +1,284 @@
+{% extends 'base.html' %}
+{% block title %}物业管理-维修报修{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <nav aria-label="breadcrumb" role="navigation">
+            <ol class="breadcrumb adminx-page-breadcrumb">
+                <li class="breadcrumb-item"><a href="/home">主页</a></li>
+                <li class="breadcrumb-item"><a href="#">维修管理</a></li>
+                <li class="breadcrumb-item active  aria-current=page">维修报修</li>
+            </ol>
+        </nav>
+
+        <div class="pb-3">
+            <h1>创建维修单</h1>
+        </div>
+        <div class="card mb-grid">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-header-title">创建维修单</div>
+
+                <nav class="card-header-actions">
+                    <a class="card-header-action" data-toggle="collapse" href="#card1" aria-expanded="false"
+                       aria-controls="card1">
+                        <i data-feather="minus-circle"></i>
+                    </a>
+
+                    <div class="dropdown">
+                        <a class="card-header-action" href="#" role="button" id="card1Settings"
+                           data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                        </a>
+                    </div>
+
+                    <a href="#" class="card-header-action">
+                        <i data-feather="x-circle"></i>
+                    </a>
+                </nav>
+            </div>
+            <div class="card-body collapse show" id="card1">
+                <form id="billForm" action="/home/repair_manager/edit/" method="post">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-label" for="repairTitle">表修标题</label>
+                                <input type="text" class="form-control" id="repairTitle">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">维修类型</label>
+                                <select name="select" class="form-control js-choice" id="selectType">
+                                    <option value="水电">水电</option>
+                                    <option value="土建">土建</option>
+                                    <option value="电梯">电梯</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="Description">详细描述</label>
+                                <input type="text" class="form-control" id="Description">
+                            </div>
+                            <button type="submit" class="btn btn-primary">创建</button>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-label" for="Urgency">紧急程度</label>
+                                <select name="select" class="form-control js-choice" id="Urgency">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="Expected_date">期望完成时间</label>
+                                <input type="data" class="form-control mb-2 date-default"
+                                       id="Expected_date">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="pb-3">
+            <h1>查看维修工单表</h1>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card mb-grid">
+                    <div class="table-responsive-md">
+                        <table class="table table-actions table-striped table-hover mb-0" data-table>
+                            <thead>
+                            <tr>
+                                <th scope="col">
+                                    <label class="custom-control custom-checkbox m-0 p-0">
+                                        <input type="checkbox" class="custom-control-input table-select-all">
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </th>
+                                <th scope="col">工单编号</th>
+                                <th scope="col">报修人ID</th>
+                                <th scope="col">维修类型</th>
+                                <th scope="col">报修标题</th>
+                                <th scope="col">详细描述</th>
+                                <th scope="col">紧急程度</th>
+                                <th scope="col">状态</th>
+                                <th scope="col">创建时间</th>
+                                <th scope="col>">期望完成时间</th>
+                                <th scope="col">实际完成时间</th>
+                                <th scope="col">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for repair in repairs %}
+                                <tr>
+                                    <th scope="row">
+                                        <label class="custom-control custom-checkbox m-0 p-0">
+                                            <input type="checkbox" class="custom-control-input table-select-row">
+                                            <span class="custom-control-indicator"></span>
+                                        </label>
+                                    </th>
+                                    <td>{{ repair.OrderID }}</td>
+                                    <td>{{ repair.ReporterID }}</td>
+                                    <td>{{ repair.RepairType }}</td>
+                                    <td>{{ repair.Title }}</td>
+                                    <td>{{ repair.Description }}</td>
+                                    <td>{{ repair.Urgency }}</td>
+                                    <td>
+                                        {% if repair.Status=='已完成' %}
+                                            <span class="badge badge-pill badge-primary ">已完成</span>
+                                        {% elif repair.Status=='待受理' %}
+                                            <span class="badge badge-pill badge-danger ">待受理</span>
+                                        {% elif repair.Status=='已派工' %}
+                                            <span class="badge badge-pill badge-info ">已派工</span>
+                                        {% else %}
+                                            <span class="badge badge-pill badge-warning ">已取消</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ repair.CreateTime }}</td>
+                                    <td>{{ repair.ExpectedTime }}</td>
+                                    <td>{{ repair.ActualFinishTime }}</td>
+                                    <td>
+                                        {% if repair.Status!='已完成' %}
+                                            <button class="btn btn-sm btn-info">完成</button>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block div_out %}
+    <!-- 确认删除 -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">确定完成</h5>
+                    <label class="modal-title" id="deleteModalLabel3"></label>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    你确定完成这个维修？
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">确定</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        $(document).ready(function () {
+            var table = $('[data-table]').DataTable({
+                "columns": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    {"orderable": false}
+                ]
+            });
+
+            /* $('.form-control-search').keyup(function(){
+              table.search($(this).val()).draw() ;
+            }); */
+        });
+
+        flatpickr(".date-default", {
+            allowInput: true
+        });
+
+        var choices = new Choices('.js-choice', {
+            placeholderValue: '请选择...',
+            shouldSort: false,
+            duplicateItemsAllowed: false,
+            noResultsText: '无结果',
+        });
+
+
+        //表单提交
+        document.getElementById('billForm').addEventListener('submit', billFormSubmit);
+
+        async function billFormSubmit(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = {
+                repairTitle: form.querySelector('#repairTitle').value,//维修标题
+                selectType: form.querySelector('#selectType').value,//维修类型
+                Description: form.querySelector('#Description').value,//问题描述
+                Urgency: form.querySelector('#Urgency').value,//紧急程度
+                Expected_date: form.querySelector('#Expected_date').value//期望完成时间
+            };
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(formData)
+                });
+                const result = await response.json();
+                showAlert(result.success ? 'success' : 'danger', result.message);
+                if (result.success) form.reset();
+                 window.setTimeout(function () {
+                            window.location.reload();
+                        },3000)
+            } catch (error) {
+                showAlert('danger', '网络错误，请重试');
+            }
+        }
+
+        function showAlert(type, message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} fixed-top mx-auto mt-3 w-50`;
+            alertDiv.textContent = message;
+            document.body.appendChild(alertDiv);
+            setTimeout(() => alertDiv.remove(), 3000);
+        }
+
+        $(document).ready(function () {
+            // 点击 Delete 按钮时触发
+            $(document).on('click', '.btn-info', function () {
+                document.getElementById('deleteModalLabel3').innerText = $(this).closest('tr').find('td').eq(0).text().trim();
+                $('#deleteModal').modal('show');
+            });
+
+            // 点击确认删除按钮
+            $('#confirmDeleteBtn').on('click', function () {
+                alert(document.getElementById('deleteModalLabel3').innerText)
+                const data = {id: document.getElementById('deleteModalLabel3').innerText};
+                fetch('/home/repair_manager/finish/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'  // 告诉 Flask 这是 JSON
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(response => response.json())
+                    .then(result => {
+                         showAlert(result.success ? 'success' : 'danger', result.message);
+                        window.setTimeout(function () {
+                            window.location.reload();
+                        },3000)
+                    })
+                    .catch(error => {
+                        showAlert('danger', '网络错误，请重试');
+                    });
+                $('#deleteModal').modal('hide');
+            });
+        });
+         function showAlert(type, message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} fixed-top mx-auto mt-3 w-50`;
+            alertDiv.textContent = message;
+            document.body.appendChild(alertDiv);
+            setTimeout(() => alertDiv.remove(), 3000);
+        }
+    </script>
+{% endblock %}

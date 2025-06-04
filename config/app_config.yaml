@@ -1,0 +1,28 @@
+security:
+    secret_key: "django-insecure-123456"# 设置flask密钥
+    csrf_enable: true   #csrf设置
+    jwt:
+      secret_key: "jwt-dev-secret-123456" # JWT专用密钥
+      token_location: ["cookies"]
+      access_cookie_name: "access_token_cookie" #cookie名字
+      cookie_csrf_protect: false   #cookie的csrf设置
+      access_token_expires: 12000  # 1小时（秒）
+
+database:
+    default: "sqlserver"  # 指定sqlserver数据库
+    sqlserver:
+          type: "mssql"
+          driver: "ODBC Driver 17 for SQL Server"
+          server: "localhost"
+          database: "PM_DataBase"
+          username: "sa"
+          password: "123456"
+          port: 1433
+    mysql:
+      type: "mysql"
+      driver: "pymysql"   #数据库驱动
+      server: "192.168.31.130"   #数据库服务器（本地）
+      database: "PM_DataBase"   #数据库名称
+      username: "username"   #数据库用户
+      password: "@123456ZHANzhan"   #数据库密码
+      port: 3306

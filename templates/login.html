@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>物业管理系统</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/adminx.css') }}" media="screen" />
+      <style>
+      .error-box {
+        border: 2px solid red;
+        color: red;
+        padding: 2px;
+        width: 300px;
+        margin: 1px auto; /* 水平居中 */
+        text-align: center; /* 文字居中 */
+        font-family: sans-serif;
+        border-radius: 5px;
+        background-color: #ffe5e5;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="adminx-container d-flex justify-content-center align-items-center">
+      <div class="page-login">
+        <div class="text-center">
+          <a class="navbar-brand mb-4 h1" href="/login">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" class="navbar-brand-image d-inline-block align-top mr-2" alt="" style="font-size:25px;">
+            用户登入
+          </a>
+        </div>
+
+        <div class="card mb-0">
+          <div class="card-body">
+            <form action="{{ url_for('login') }}" method="post">
+                {{ form.hidden_tag() }}<!-- 动态表单 -->
+              <div class="form-group">
+                <label for="exampleDropdownFormEmail1" class="form-label" style="font-size:18px;">邮箱/</label>
+{#                <input type="email" class="form-control" id="LoginEmail1" name="LoginEmail1" placeholder="email@example.com" required>#}
+                {{ form.username.label }}
+                {{ form.username(placeholder="email@example.com", class="form-control",type="email") }}
+              </div>
+              <div class="form-group">
+                <label for="exampleDropdownFormPassword1" class="form-label" style="font-size:18px;">密码</label>
+{#                <input type="password" class="form-control" id="LoginPassword1" name="LoginPassword1" placeholder="Password" required>#}
+                {{ form.password(placeholder="Password", class="form-control",type="password") }}
+              </div>
+              <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="customCheck1">
+                  <label class="custom-control-label" for="customCheck1">记住我？</label>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-sm btn-block btn-primary" style="font-size:18px;">登入</button>
+            </form>
+          </div>
+          <div class="card-footer text-center">
+              {% if error %}
+                    <div class="error-box">{{ error }}</div>
+              {% endif %}
+            <a href="fget_psword"><small style="font-size:18px;">忘记密码</small></a>
+          </div>
+            <div class="card-footer text-center">
+                <a href="signup"><small style="font-size:18px;">注册</small></a>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- If you prefer jQuery these are the required scripts -->
+    <script src="/static/js/jquery-3.2.1.min.js"></script>
+    <script src="/static/js/popper.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='js/vendor.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/adminx.js') }}"></script>
+  </body>
+</html>

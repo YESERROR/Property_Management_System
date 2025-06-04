@@ -1,0 +1,278 @@
+{% extends 'base.html' %}
+{% block title %}物业管理-创建账单{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <nav aria-label="breadcrumb" role="navigation">
+            <ol class="breadcrumb adminx-page-breadcrumb">
+                <li class="breadcrumb-item"><a href="/home">主页</a></li>
+                <li class="breadcrumb-item"><a href="#">资产管理</a></li>
+                <li class="breadcrumb-item active  aria-current=page">创建账单</li>
+            </ol>
+        </nav>
+
+        <div class="pb-3">
+            <h1>创建账单</h1>
+        </div>
+        <div class="card mb-grid">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-header-title">创建账单</div>
+
+                <nav class="card-header-actions">
+                    <a class="card-header-action" data-toggle="collapse" href="#card1" aria-expanded="false"
+                       aria-controls="card1">
+                        <i data-feather="minus-circle"></i>
+                    </a>
+
+                    <div class="dropdown">
+                        <a class="card-header-action" href="#" role="button" id="card1Settings"
+                           data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                        </a>
+                    </div>
+
+                    <a href="#" class="card-header-action">
+                        <i data-feather="x-circle"></i>
+                    </a>
+                </nav>
+            </div>
+            <div class="card-body collapse show" id="card1">
+                <form id="billForm" action="/home/pushbill/create" method="post">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-label" for="billName">收费名称</label>
+                                <input type="text" class="form-control" id="billName" placeholder="不要乱收费！！！">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">收费项目</label>
+                                <select name="select" class="form-control js-choice" id="selectType">
+                                    <option value="公摊">公摊</option>
+                                    <option value="垃圾转运费">垃圾转运费</option>
+                                    <option value="维修公摊费">维修公摊费</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="price">单价</label>
+                                <input type="number" class="form-control" id="price"
+                                       placeholder="1.2元/每品方">
+                            </div>
+                            <button type="submit" class="btn btn-primary">创建</button>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-label" for="selectQuantity">房产类型</label>
+                                <select name="select" class="form-control js-choice" id="selectQuantity">
+                                    <option value="住宅">住宅</option>
+                                    <option value="店面">店面</option>
+                                    <option value="停车位">停车位</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="Start_date">开始日期</label>
+                                <input type="data" class="form-control mb-2 date-default"
+                                       id="Start_date">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="deadline">截至日期</label>
+                                <input type="date" class="form-control mb-2 date-default" id="deadline">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="pb-3">
+            <h1>查看已有账单</h1>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card mb-grid">
+                    <div class="table-responsive-md">
+                        <table class="table table-actions table-striped table-hover mb-0" data-table>
+                            <thead>
+                            <tr>
+                                <th scope="col">
+                                    <label class="custom-control custom-checkbox m-0 p-0">
+                                        <input type="checkbox" class="custom-control-input table-select-all">
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </th>
+                                <th scope="col">账单id</th>
+                                <th scope="col">收费名称</th>
+                                <th scope="col">收费项目</th>
+                                <th scope="col">单价</th>
+                                <th scope="col">住宅类型</th>
+                                <th scope="col">开始时间</th>
+                                <th scope="col">截至日期</th>
+                                <th scope="col">状态</th>
+                                <th scope="col">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for bill in bills %}
+                            <tr>
+                                <th scope="row">
+                                    <label class="custom-control custom-checkbox m-0 p-0">
+                                        <input type="checkbox" class="custom-control-input table-select-row">
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </th>
+                                <td>{{ bill.StandardID }}</td>
+                                <td>{{ bill.Property_name }}</td>
+                                <td>{{ bill.FreeType}}</td>
+                                <td>{{ bill.UnitPrice }}</td>
+                                <td>{{ bill.PropertyType }}</td>
+                                <td>{{ bill.StartDate }}</td>
+                                <td>{{ bill.EndDate }}</td>
+                                <td>
+                                    {% set now = datetime.date.today() %}
+{#                                    {% set start=datetime.datetime.strptime(bill.StartDate,'%Y-%m-%d') %}#}
+{#                                    {% set end=datetime.datetime.strptime(bill.EndDate,'%Y-%m-%d') %}#}
+                                    {% if bill.StartDate<=now and now<=bill.EndDate %}
+                                    <span class="badge badge-pill badge-primary ">有效</span>
+                                    {% elif bill.EndDate<=now %}
+                                             <span class="badge badge-pill badge-danger ">过期</span>
+                                    {% else %}
+                                      <span class="badge badge-pill badge-warning ">无效</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-danger">删除</button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block div_out %}
+    <!-- 确认删除 -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">确定删除</h5>
+                    <label class="modal-title" id="deleteModalLabel3"></label>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    你确定要删除这个账单？
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">清除</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        $(document).ready(function () {
+            var table = $('[data-table]').DataTable({
+                "columns": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    {"orderable": false}
+                ]
+            });
+
+            /* $('.form-control-search').keyup(function(){
+              table.search($(this).val()).draw() ;
+            }); */
+        });
+
+        flatpickr(".date-default", {
+            allowInput: true
+        });
+
+        var choices = new Choices('.js-choice', {
+            placeholderValue: '请选择...',
+            shouldSort: false,
+            duplicateItemsAllowed: false,
+            noResultsText: '无结果',
+        });
+
+
+        //表单提交
+        document.getElementById('billForm').addEventListener('submit', billFormSubmit);
+
+        async function billFormSubmit(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = {
+                Property_name: form.querySelector('#billName').value,
+                FreeType: form.querySelector('#selectType').value,
+                UnitPrice: form.querySelector('#price').value,
+                PropertyType: form.querySelector('#selectQuantity').value,
+                StartDate: form.querySelector('#Start_date').value,
+                EndDate: form.querySelector('#deadline').value,
+            };
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(formData)
+                });
+                const result = await response.json();
+                showAlert(result.success ? 'success' : 'danger', result.message);
+                if (result.success) form.reset();
+            } catch (error) {
+                showAlert('danger', '网络错误，请重试');
+            }
+        }
+
+        function showAlert(type, message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} fixed-top mx-auto mt-3 w-50`;
+            alertDiv.textContent = message;
+            document.body.appendChild(alertDiv);
+            setTimeout(() => alertDiv.remove(), 3000);
+        }
+
+        $(document).ready(function () {
+            // 点击 Delete 按钮时触发
+            $(document).on('click', '.btn-danger', function () {
+                document.getElementById('deleteModalLabel3').innerText = $(this).closest('tr').find('td').eq(0).text().trim();
+                $('#deleteModal').modal('show');
+            });
+
+            // 点击确认删除按钮
+             $('#confirmDeleteBtn').on('click', function () {
+              alert(document.getElementById('deleteModalLabel3').innerText)
+                const data = {id: document.getElementById('deleteModalLabel3').innerText};
+                fetch('/home/pushbill/delete', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'  // 告诉 Flask 这是 JSON
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.status === 'success') {
+                            alert("保存成功");
+                        } else {
+                            alert("保存失败" + result.message);
+                        }
+                        // 你可以在这里刷新页面或隐藏 modal
+                        location.reload();
+                    })
+                    .catch(error => {
+                        console.error('提交失败', error);
+                    });
+              $('#deleteModal').modal('hide');
+            });
+        });
+    </script>
+{% endblock %}

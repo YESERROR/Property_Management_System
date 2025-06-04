@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% block title %}物业管理-账单付费{% endblock %}
+{% block content %}
+    <div class="adminx-content">
+        <div class="adminx-main-content">
+            <div class="container-fluid">
+                <!-- BreadCrumb -->
+                <nav aria-label="breadcrumb" role="navigation">
+                    <ol class="breadcrumb adminx-page-breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">主页</a></li>
+                        <li class="breadcrumb-item"><a href="#">资产管理</a></li>
+                        <li class="breadcrumb-item active  aria-current">账单付费</li>
+                    </ol>
+                </nav>
+
+                <div class="pb-3">
+                    <h1>账单</h1>
+                </div>
+                {#                <div class="row">#}
+                {#                    <div class="col">#}
+                {#                        <div class="alert alert-warning" role="alert">#}
+                {#                            <strong>DataTables are a jQuery-only plugin</strong><br/>#}
+                {#                            If you know a similar vanilla JS library that you want to see supported, feel free to open#}
+                {#                            an issue on GitHub.#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                </div>#}
+                <div class="row">
+                    <div class="col">
+                        <div class="card mb-grid">
+                            <div class="table-responsive-md">
+                                <table class="table table-actions table-striped table-hover mb-0" data-table>
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">
+                                            <label class="custom-control custom-checkbox m-0 p-0">
+                                                <input type="checkbox" class="custom-control-input table-select-all">
+                                                <span class="custom-control-indicator"></span>
+                                            </label>
+                                        </th>
+                                        <th scope="col">账单id</th>
+                                        <th scope="col">计费周期</th>
+                                        <th scope="col">总金额</th>
+                                        <th scope="col">状态</th>
+                                        <th scope="col">生成日期</th>
+                                        <th scope="col">缴费截止日期</th>
+                                        <th scope="col">操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for bill in bills %}
+                                        <tr>
+                                            <th scope="row">
+                                                <label class="custom-control custom-checkbox m-0 p-0">
+                                                    <input type="checkbox"
+                                                           class="custom-control-input table-select-row">
+                                                    <span class="custom-control-indicator"></span>
+                                                </label>
+                                            </th>
+                                            <td>{{ bill.BillID }}</td>
+                                            <td>{{ bill.BillingCycle }}</td>
+                                            <td>{{ bill.TotalAmount }}</td>
+                                            <td>{{ bill.Status }}</td>
+                                            <td>{{ bill.GenerateDate }}</td>
+                                            <td>
+                                                {% set now = datetime.date.today() %}
+                                                {#                                    {% set start=datetime.datetime.strptime(bill.StartDate,'%Y-%m-%d') %}#}
+                                                {#                                    {% set end=datetime.datetime.strptime(bill.EndDate,'%Y-%m-%d') %}#}
+                                                {% if now<=bill.DueDate %}
+                                                    <span class="badge badge-pill badge-primary ">有效</span>
+                                                {% else %}
+                                                    <span class="badge badge-pill badge-danger  ">过期</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if bill.Status=='未缴费' %}
+                                                    <button class="btn btn-sm btn-info">缴费</button>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block div_out %}
+    <script>
+        $(document).ready(function () {
+            // 点击 Delete 按钮时触发
+            $(document).on('click', '.btn-info', function () {
+                document.getElementById('deleteModalLabel3').innerText = $(this).closest('tr').find('td').eq(0).text().trim();
+                $('#deleteModal').modal('show');
+            });
+
+            // 点击确认删除按钮
+            $('#confirmDeleteBtn').on('click', function () {
+                alert(document.getElementById('deleteModalLabel3').innerText)
+                const data = {id: document.getElementById('deleteModalLabel3').innerText};
+                fetch('/home/payFee/pay/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'  // 告诉 Flask 这是 JSON
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(response => response.json())
+                    .then(result => {
+                       showAlert(result.success ? 'success' : 'danger', result.message);
+                        // 你可以在这里刷新页面或隐藏 modal
+                        {#location.reload();#}
+                    })
+                    .catch(error => {
+                        showAlert('danger', '网络错误，请重试');
+                    });
+                $('#deleteModal').modal('hide');
+            });
+        });
+         function showAlert(type, message) {
+                const alertDiv = document.createElement('div');
+                alertDiv.className = `alert alert-${type} fixed-top mx-auto mt-3 w-50`;
+                alertDiv.textContent = message;
+                document.body.appendChild(alertDiv);
+                setTimeout(() => alertDiv.remove(), 3000);
+            }
+    </script>
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">确定缴费</h5>
+                    <label class="modal-title" id="deleteModalLabel3"></label>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    你确定要缴费？
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">清除</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

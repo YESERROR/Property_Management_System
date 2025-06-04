@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>物业管理系统 - 注册</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- description -->
+    <meta name="description" content="物业管理系统 - 注册">
+    <link rel="shortcut icon" href="/static/img/logo.png">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css">
+    <!-- Fonts and icons -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700" rel="stylesheet">
+    <!-- Reset CSS -->
+    <link rel="stylesheet" href="/static/css/reset.css">
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+    <!-- Responsive  CSS -->
+    <link rel="stylesheet" href="/static/css/responsive.css">
+</head>
+<body>
+
+<div class="wizard-main">
+    <div id="particles-js"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="title-wb">物业管理系统 - 注册</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 banner-sec">
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner" role="listbox">
+                        <div class="carousel-item active">
+                            <img class="d-block img-fluid" src="/static/img/yanhaitao.png" alt="First slide">
+                            <div class="carousel-caption d-none d-md-block">
+                                <div class="banner-text">
+                                    <h2>颜海涛</h2>
+                                    <p>这是马牛逼</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img class="d-block img-fluid" src="/static/img/yanhaitao2.png" alt="First slide">
+                            <div class="carousel-caption d-none d-md-block">
+                                <div class="banner-text">
+                                    <h2>This is Heaven</h2>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+                                        nostrud exercitation</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img class="d-block img-fluid" src="/static/img/slider-03.jpg" alt="First slide">
+                            <div class="carousel-caption d-none d-md-block">
+                                <div class="banner-text">
+                                    <h2>This is Heaven</h2>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+                                        nostrud exercitation</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 login-sec">
+                <div class="login-sec-bg">
+                    <h2 class="text-center">用户注册</h2>
+                    <form id="example-advanced-form" action="/signup" style="display: none;">
+                        <h3>用户</h3>
+                        <fieldset class="form-input">
+                            <h4>用户信息</h4>
+                            <label for="userName">邮箱 *</label>
+                            <input id="userName" name="userName" type="text"
+                                   class="form-control form-controlrequired email required">
+                            <label for="telephone">联系电话</label>
+                            <input id="telephone" name="telephone" type="number" class="form-control required">
+                            <label for="password">密码 *</label>
+                            <input id="password" name="password" type="text" class="form-control required">
+                            <label for="confirm">重复密码 *</label>
+                            <input id="confirm" name="confirm" type="text" class="form-control required">
+                             <label for="role">选择角色：</label>
+                            <select id="role" name="role" class="form-control required">权限 *
+                                <option value="admin">物业员工</option>
+                                <option value="user">业主</option>
+                                <option value="repair">维修工</option>
+                            </select>
+                        </fieldset>
+
+                        <h3>完善资料</h3>
+                        <fieldset class="form-input">
+                            <h4>完善资料</h4>
+                            <label for="name">真实姓名</label>
+                            <input id="name" name="name" type="text" class="form-control required">
+                            <label for="IDCard">身份证</label>
+                            <input id="IDCard" name="IDCard" type="text" class="form-control required">
+                            <label for="room">房间号</label>
+                            <input id="room" name="room" type="text" class="form-control required">
+                            <label for="Area">建筑面积</label>
+                            <input id="Area" name="Area" type="text" class="form-control required">
+                            <label for="Property_Type">房产类型：</label>
+                            <select id="Property_Type" name="Property_Type" class="form-control required">房产类型
+                                <option value="住宅">住宅</option>
+                                <option value="商铺">商铺</option>
+                                <option value="车位">车位</option>
+                            </select>
+                            {#                            						<label for="address">Address</label>#}
+                            {#                            						<input id="address" name="address" type="text" class="form-control">#}
+                            {#                            							<label for="age">Age (The warning step will show up if age is less than 18) *</label>#}
+                            {#                            							<input id="age" name="age" type="text" class="form-control required number">#}
+                        </fieldset>
+
+                        <!--						<h3>Warning</h3>-->
+                        <!--						<fieldset class="form-input">-->
+                        <!--							<h4>You are to young</h4>-->
+
+                        <!--							<p>Please go away ;-)</p>-->
+                        <!--						</fieldset>-->
+                        <h3>提交</h3>
+                        <fieldset class="form-input">
+                            <h4>条款和条件</h4>
+                            <input id="acceptTerms-2" name="acceptTerms" type="checkbox" class="required"> <label
+                                for="acceptTerms-2">我同意隐私协议</label>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- jquery latest version -->
+<script src="/static/js/jquery.min.js"></script>
+<!-- popper.min.js -->
+<script src="/static/js/popper.min.js"></script>
+<!-- bootstrap js -->
+<script src="/static/js/bootstrap.min.js"></script>
+<!-- jquery.steps js -->
+<script src='/static/js/jquery.validate.js'></script>
+<script src="/static/js/jquery.steps.js"></script>
+<!-- particles js -->
+<script src="/static/js/particles.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        particlesJS("particles-js",
+            {
+                "particles": {
+                    "number": {
+                        "value": 160,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#ffffff"
+                    },
+                    "shape": {
+                        "type": "circle",
+                        "stroke": {
+                            "width": 0,
+                            "color": "#000000"
+                        },
+                        "polygon": {
+                            "nb_sides": 5
+                        },
+                        "image": {
+                            "src": "img/github.svg",
+                            "width": 100,
+                            "height": 100
+                        }
+                    },
+                    "opacity": {
+                        "value": 1,
+                        "random": true,
+                        "anim": {
+                            "enable": true,
+                            "speed": 1,
+                            "opacity_min": 0,
+                            "sync": false
+                        }
+                    },
+                    "size": {
+                        "value": 3,
+                        "random": true,
+                        "anim": {
+                            "enable": false,
+                            "speed": 4,
+                            "size_min": 0.3,
+                            "sync": false
+                        }
+                    },
+                    "line_linked": {
+                        "enable": false,
+                        "distance": 150,
+                        "color": "#ffffff",
+                        "opacity": 0.4,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 1,
+                        "direction": "none",
+                        "random": true,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false,
+                        "attract": {
+                            "enable": false,
+                            "rotateX": 600,
+                            "rotateY": 600
+                        }
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "bubble"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "repulse"
+                        },
+                        "resize": true
+                    },
+                    "modes": {
+                        "grab": {
+                            "distance": 400,
+                            "line_linked": {
+                                "opacity": 1
+                            }
+                        },
+                        "bubble": {
+                            "distance": 250,
+                            "size": 0,
+                            "duration": 2,
+                            "opacity": 0,
+                            "speed": 3
+                        },
+                        "repulse": {
+                            "distance": 400,
+                            "duration": 0.4
+                        },
+                        "push": {
+                            "particles_nb": 4
+                        },
+                        "remove": {
+                            "particles_nb": 2
+                        }
+                    }
+                },
+                "retina_detect": true
+            }
+        );
+    });
+</script>
+
+<script>
+    $.validator.addMethod("roomFormat", function (value, element) {
+        return this.optional(element) || /^\d{3,4}栋\d{3}室$/.test(value);
+    }, "请输入格式如 101栋305室 或 1201栋305室");
+
+    $.validator.addMethod("IDCardFormat", function (value, element) {
+        return this.optional(element) || /^[1-9]\d{5}(19\d{2}|20\d{2})(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])\d{3}[\dXx]$/.test(value);
+    }, "请输入正确身份证");
+
+    $.validator.addMethod("telephoneFormat", function (value, element) {
+        return this.optional(element) || /^1[3-9]\d{9}$/.test(value);
+    }, "请输正确手机号");
+
+    $.validator.addMethod("areaFormat", function (value, element) {
+        return this.optional(element) || /^(60|[6-9]\d|1\d{2}|2\d{2}|300)$/.test(value);
+    }, "请输正确房产面积");
+
+    $.validator.addMethod("nameFormat", function (value, element) {
+        return this.optional(element) || /^[\u4e00-\u9fa5]{2,}$/.test(value);
+    }, "请输入纯中文且长度大于2");
+
+    $.validator.addMethod("passwordFormat", function (value, element) {
+        return this.optional(element) || /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,20}$/.test(value);
+    }, "请输入必须包含大小写字母、数字和特殊字符的密码");
+    var form = $("#example-advanced-form").show();
+
+    form.steps({
+        headerTag: "h3",
+        bodyTag: "fieldset",
+        transitionEffect: "slideLeft",
+        onStepChanging: function (event, currentIndex, newIndex) {
+            // Allways allow previous action even if the current form is not valid!
+            if (currentIndex > newIndex) {
+                return true;
+            }
+            // Forbid next action on "Warning" step if the user is to young
+            if (newIndex === 3 && Number($("#age").val()) < 18) {
+                return false;
+            }
+            // Needed in some cases if the user went back (clean up)
+            if (currentIndex < newIndex) {
+                // To remove error styles
+                form.find(".body:eq(" + newIndex + ") label.error").remove();
+                form.find(".body:eq(" + newIndex + ") .error").removeClass("error");
+            }
+            form.validate().settings.ignore = ":disabled,:hidden";
+            return form.valid();
+        },
+        onStepChanged: function (event, currentIndex, priorIndex) {
+            // Used to skip the "Warning" step if the user is old enough.
+            if (currentIndex === 2 && Number($("#age").val()) >= 18) {
+                form.steps("next");
+            }
+            // Used to skip the "Warning" step if the user is old enough and wants to the previous step.
+            if (currentIndex === 2 && priorIndex === 3) {
+                form.steps("previous");
+            }
+        },
+        onFinishing: function (event, currentIndex) {
+            form.validate().settings.ignore = ":disabled";
+            return form.valid();
+        },
+        onFinished: function (event, currentIndex) {
+            {#alert("Submitted!");#}
+            if (form.valid()) {
+                $.ajax({
+                    url: form.attr("action"),  // 表单 action 里的 URL
+                    type: form.attr("method") || "POST",
+                    data: form.serialize(),
+                    success: function (response) {
+                        alert("提交成功！请等待管理员审核！");
+                        // 你也可以在这里重定向或更新页面内容
+                        window.location.href = "/login";
+                    },
+                    error: function (xhr, status, error) {
+                        alert("提交失败: " + error);
+                        window.location.href = "/sign_up.html";
+                    }
+                });
+            }
+        }
+    }).validate({
+        errorPlacement: function errorPlacement(error, element) {
+            element.before(error);
+        },
+        rules: {
+            confirm: {
+                equalTo: "#password"
+            },
+            telephone: {
+                required : true,
+                telephoneFormat : true
+            },
+            Area:{
+              required: true,
+              areaFormat: true
+            },
+            room: {
+                required: true,
+                roomFormat: true
+            },
+            password: {
+                required: true,
+                passwordFormat: true
+            },
+            name: {
+                required: true,
+                nameFormat: true
+            },
+            IDCard:
+                {
+                    required:true,
+                    IDCardFormat: true
+                }
+        }
+    });
+</script>
+</body>
+</html>

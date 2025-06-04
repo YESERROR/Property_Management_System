@@ -1,0 +1,278 @@
+{% extends 'base.html' %}
+{% block title %}物业管理-业主管理{% endblock %}
+{% block content %}
+    <div class="adminx-content">
+        <div class="adminx-main-content">
+            <div class="container-fluid">
+                <!-- BreadCrumb -->
+                <nav aria-label="breadcrumb" role="navigation">
+                    <ol class="breadcrumb adminx-page-breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">主页</a></li>
+                        <li class="breadcrumb-item"><a href="#">人事管理</a></li>
+                        <li class="breadcrumb-item active  aria-current">业主管理</li>
+                    </ol>
+                </nav>
+                <div class="pb-3">
+                    <h1>业主数据表</h1>
+                </div>
+                {#                <div class="row">#}
+                {#                    <div class="col">#}
+                {#                        <div class="alert alert-warning" role="alert">#}
+                {#                            <strong>DataTables are a jQuery-only plugin</strong><br/>#}
+                {#                            If you know a similar vanilla JS library that you want to see supported, feel free to open#}
+                {#                            an issue on GitHub.#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                </div>#}
+                <div class="row">
+                    <div class="col">
+                        <div class="card mb-grid">
+                            <div class="table-responsive-md">
+                                <table class="table table-actions table-striped table-hover mb-0" data-table>
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">
+                                            <label class="custom-control custom-checkbox m-0 p-0">
+                                                <input type="checkbox" class="custom-control-input table-select-all">
+                                                <span class="custom-control-indicator"></span>
+                                            </label>
+                                        </th>
+                                        <th scope="col">id</th>
+                                        <th scope="col">邮箱</th>
+                                        <th scope="col">真实姓名</th>
+                                        <th scope="col">房间</th>
+                                        <th scope="col">面积</th>
+                                        <th scope="col">房产类型</th>
+                                        <th scope="col">权限</th>
+                                        <th scope="col">更改</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for user in users %}
+                                        <tr>
+                                            <th scope="row">
+                                                <label class="custom-control custom-checkbox m-0 p-0">
+                                                    <input type="checkbox"
+                                                           class="custom-control-input table-select-row">
+                                                    <span class="custom-control-indicator"></span>
+                                                </label>
+                                            </th>
+                                            <td>{{ user.id }}</td>
+                                            <td>{{ user.username }}</td>
+                                            <td>{{ user.user_info.name }}</td>
+                                            <td>{{ user.user_property.BuildingNo+'栋'+user.user_property.RoomNo+'室' }}</td>
+                                            <td>{{ user.user_property.Area }}</td>
+                                            <td>{{ user.user_property.PropertyType }}</td>
+                                            <td>
+                                                <span class="badge badge-pill badge-{{ 'primary' if 'admin' in user.role.split() else 'secondary' }}">{{ user.role }}</span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-primary" data-id="{{ user.id }}"
+                                                        onclick="openEditModal(this)">编辑
+                                                </button>
+                                                <button class="btn btn-sm btn-danger">删除</button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block div_out %}
+    <script>
+        let id_out = 'new';
+        $(document).ready(function () {
+            var table = $('[data-table]').DataTable({
+                // 禁用最后一列排序（操作按钮列）
+                "columnDefs": [
+                    {"orderable": false, "targets": -1}, // 最后一列
+                    {"orderable": false, "targets": 0}  // 第0列（复选框）
+                ],
+                // 可选：语言包设置为中文（如需要）
+                "language": {
+                    "search": "搜索：",
+                    "lengthMenu": "每页 _MENU_ 条",
+                    "zeroRecords": "未找到结果",
+                    "info": "第 _START_ 到 _END_ 条，共 _TOTAL_ 条",
+                    "infoEmpty": "无记录",
+                    "paginate": {
+                        "first": "首页",
+                        "last": "末页",
+                        "next": "下一页",
+                        "previous": "上一页"
+                    }
+                }
+            });
+
+            // 启用搜索框（可选）
+            $('.form-control-search').on('keyup', function () {
+                table.search(this.value).draw();
+            });
+        });
+
+        //编辑表单
+
+        function openEditModal(button) {
+            const userId = button.getAttribute('data-user-id');
+            document.getElementById("ID_name").value = userId  // 或者放到隐藏 <input> 中
+            $('#editModal').modal('show');
+        }
+
+        $(document).ready(function () {
+            // 当点击 Edit 按钮时触发
+            $(document).on('click', '.btn-primary', function () {
+                {#let currentRow = $(this).closest('tr');#}
+                {#document.querySelector("#ID_name").value  = currentRow.find('td').eq(0).text().trim();#}
+                {#console.log(document.querySelector("#ID_name").value)#}
+                $('#editModal').modal('show');
+             });
+            // 提交表单后更新表格
+            $('#editForm').on('submit', function (e) {
+                e.preventDefault();  // 阻止默认提交行为
+                console.log(document.querySelector("#editRoom").value);
+                console.log(document.querySelector("#ID_name").value);
+                const data = {
+                    id: document.getElementById("ID_name").value,
+                    username: document.getElementById('editUserName').value,
+                    name: document.getElementById('editName').value,
+                    room: document.querySelector("#editRoom").value
+                };
+                fetch('/home/property_manager/edit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'  // 告诉 Flask 这是 JSON
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(response => response.json())
+                    .then(result => {
+                        showAlert(result.success ? 'success' : 'danger', result.message);
+                        window.setTimeout(function () {
+                            window.location.reload();
+                        },3000)
+                        // 你可以在这里刷新页面或隐藏 moda
+                    })
+                    .catch(error => {
+                        showAlert('danger', '前端错误：'+error);
+                    });
+                $('#editModal').modal('hide');
+            });
+        });
+
+        //清除表单
+        $(document).ready(function () {
+            // 点击 Delete 按钮时触发
+            $(document).on('click', '.btn-danger', function () {
+                document.getElementById('deleteModalLabel3').innerText = $(this).closest('tr').find('td').eq(0).text().trim();
+                $('#deleteModal').modal('show');
+            });
+
+            // 点击确认删除按钮
+            $('#confirmDeleteBtn').on('click', function () {
+                  alert(document.getElementById('deleteModalLabel3').innerText)
+                const data = {id: document.getElementById('deleteModalLabel3').innerText};
+                fetch('/home/property_manager/delete', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'  // 告诉 Flask 这是 JSON
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(response => response.json())
+                    .then(result => {
+                        showAlert(result.success ? 'success' : 'danger', result.message);
+                        window.setTimeout(function () {
+                            window.location.reload();
+                        },3000)
+                        // 你可以在这里刷新页面或隐藏 modal
+                    })
+                    .catch(error => {
+                        showAlert('danger', '前端错误：'+error);
+                    });
+              $('#deleteModal').modal('hide');
+            });
+        });
+         function showAlert(type, message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} fixed-top mx-auto mt-3 w-50`;
+            alertDiv.textContent = message;
+            document.body.appendChild(alertDiv);
+            setTimeout(() => alertDiv.remove(), 3000);
+        }
+
+    </script>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="editForm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel1">编辑</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Editable Fields -->
+                        <div class="form-group">
+                            <label for="ID_name">ID</label>
+                            <input type="text" class="form-control" id="ID_name" name="ID_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="editUserName">邮箱/用户名</label>
+                            <input type="text" class="form-control" id="editUserName" name="editUserName"
+                                   placeholder="email@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editName">真实姓名</label>
+                            <input type="text" class="form-control" id="editName" name="editName" placeholder="XXX" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editRoom">房间</label>
+                            <input type="text" class="form-control" id="editRoom" name="editRoom"
+                                   placeholder="xxx栋xxx室" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" >保存</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">确定删除</h5>
+                    <label class="modal-title" id="deleteModalLabel3"></label>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    你确定要删除这个用户？
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">清除</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 成功弹窗 -->
+    {#    加载顺序必须是：先 jQuery → 后 Bootstrap JS。#}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

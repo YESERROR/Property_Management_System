@@ -1,0 +1,399 @@
+{% extends 'base.html' %}
+{% block title %}物业管理-注册审核{% endblock %}
+{% block content %}
+    <div class="adminx-content">
+        <div class="adminx-main-content">
+            <div class="container-fluid">
+                <!-- BreadCrumb -->
+                <nav aria-label="breadcrumb" role="navigation">
+                    <ol class="breadcrumb adminx-page-breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">主页</a></li>
+                        <li class="breadcrumb-item"><a href="#">人事管理</a></li>
+                        <li class="breadcrumb-item active  aria-current">注册审核</li>
+                    </ol>
+                </nav>
+                <div class="pb-3">
+                    <h1>添加用户</h1>
+                </div>
+                <div class="card mb-grid">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="card-header-title">用户信息</div>
+
+                        <nav class="card-header-actions">
+                            <a class="card-header-action" data-toggle="collapse" href="#card1" aria-expanded="false"
+                               aria-controls="card1">
+                                <i data-feather="minus-circle"></i>
+                            </a>
+
+                            <div class="dropdown">
+                                <a class="card-header-action" href="#" role="button" id="card1Settings"
+                                   data-toggle="dropdown"
+                                   aria-haspopup="true" aria-expanded="false">
+                                    <i data-feather="settings"></i>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="card1Settings">
+                                    <a class="dropdown-item" href="#">Action</a>
+                                    <a class="dropdown-item" href="#">Another action</a>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+                            </div>
+
+                            <a href="#" class="card-header-action">
+                                <i data-feather="x-circle"></i>
+                            </a>
+                        </nav>
+                    </div>
+                    <div class="card-body collapse show" id="card1">
+                        <form id="addUser" action="/home/registration_assessment/add">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="email_text">用户名（邮箱）</label>
+                                        <input type="email" class="form-control" id="email_text" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="password_text">密码</label>
+                                        <input type="text" class="form-control" id="password_text" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">用户权限</label>
+                                        <select name="select" class="form-control js-choice" id="selectType">
+                                            <option value="admin">管理员</option>
+                                            <option value="user">用户</option>
+                                            <option value="repair">维修工</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="telephone_text">电话</label>
+                                        <input type="text" class="form-control " id="telephone_text" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="idCard_text">身份证</label>
+                                        <input type="text" class="form-control" id="idCard_text" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="name_text">真实姓名</label>
+                                        <input type="text" class="form-control" id="name_text" required>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-lg-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="room_text">楼房号</label>
+                                    <input type="text" class="form-control" id="room_text" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="area_text">面积</label>
+                                    <input type="text" class="form-control" id="area_text" required>
+                                </div>
+                                <label class="form-label" for="selectProperty">房产类型</label>
+                                <select name="select" class="form-control js-choice" id="selectProperty">
+                                    <option value="住宅">住宅</option>
+                                    <option value="商铺">商铺</option>
+                                    <option value="车位">车位</option>
+                                </select>
+                            </div>
+                            <input type="hidden" name="content" id="hiddenContent">
+                            <button type="submit" class="btn btn-primary">提交</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="pb-3">
+                    <h1>待审核</h1>
+                </div>
+
+                {#                <div class="row">#}
+                {#                    <div class="col">#}
+                {#                        <div class="alert alert-warning" role="alert">#}
+                {#                            <strong>DataTables are a jQuery-only plugin</strong><br/>#}
+                {#                            If you know a similar vanilla JS library that you want to see supported, feel free to open#}
+                {#                            an issue on GitHub.#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                </div>#}
+                <div class="row">
+                    <div class="col">
+                        <div class="card mb-grid">
+                            <div class="table-responsive-md">
+                                <table class="table table-actions table-striped table-hover mb-0" data-table>
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">
+                                            <label class="custom-control custom-checkbox m-0 p-0">
+                                                <input type="checkbox" class="custom-control-input table-select-all">
+                                                <span class="custom-control-indicator"></span>
+                                            </label>
+                                        </th>
+                                        <th scope="col">id</th>
+                                        <th scope="col">邮箱</th>
+                                        <th scope="col">真实姓名</th>
+                                        <th scope='col'>身份证</th>
+                                        <th scope="col">电话号码</th>
+                                        <th scope="col">楼房号</th>
+                                        <th scope="col">房间</th>
+                                        <th scope="col">面积</th>
+                                        <th scope="col">权限</th>
+                                        <th scope="col">审核</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for user in users %}
+                                        <tr>
+                                            <th scope="row">
+                                                <label class="custom-control custom-checkbox m-0 p-0">
+                                                    <input type="checkbox"
+                                                           class="custom-control-input table-select-row">
+                                                    <span class="custom-control-indicator"></span>
+                                                </label>
+                                            </th>
+                                            <td>{{ user.id }}</td>
+                                            <td>{{ user.username }}</td>
+                                            <td>{{ user.name }}</td>
+                                            <td>{{ user.IDCard }}</td>
+                                            <td>{{ user.telephone }}</td>
+                                            <td>{{ user.BuildingNo }}</td>
+                                            <td>{{ user.RoomNo }}</td>
+                                            <td>{{ user.Area }}</td>
+                                            <td>
+                                                <span class="badge badge-pill badge-{{ 'primary' if 'admin' in user.role.split() else 'secondary' }}">{{ user.role }}</span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-primary btn-accept"
+                                                        data-id="{{ user.id }}">通过
+                                                </button>
+                                                <button class="btn btn-sm btn-danger btn-refuse">拒绝</button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block div_out %}
+    <script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
+    <script>
+        let id_out = 'new';
+        $(document).ready(function () {
+            var table = $('[data-table]').DataTable({
+                // 禁用最后一列排序（操作按钮列）
+                "columnDefs": [
+                    {"orderable": false, "targets": -1}, // 最后一列
+                    {"orderable": false, "targets": 0}  // 第0列（复选框）
+                ],
+                // 可选：语言包设置为中文（如需要）
+                "language": {
+                    "search": "搜索：",
+                    "lengthMenu": "每页 _MENU_ 条",
+                    "zeroRecords": "未找到结果",
+                    "info": "第 _START_ 到 _END_ 条，共 _TOTAL_ 条",
+                    "infoEmpty": "无记录",
+                    "paginate": {
+                        "first": "首页",
+                        "last": "末页",
+                        "next": "下一页",
+                        "previous": "上一页"
+                    }
+                }
+            });
+
+            // 启用搜索框（可选）
+            $('.form-control-search').on('keyup', function () {
+                table.search(this.value).draw();
+            });
+        });
+
+
+        $(document).ready(function () {
+            // 动态存储当前操作类型（'accept' 或 'refuse'）和 ID
+            let currentAction = '';
+            let currentId = '';
+
+            // 点击“通过”或“拒绝”按钮时触发
+            $(document).on('click', '.btn-accept, .btn-refuse', function () {
+                currentAction = $(this).hasClass('btn-accept') ? 'accept' : 'refuse';
+                currentId = $(this).closest('tr').find('td').eq(0).text().trim();
+
+                // 动态设置模态框内容
+                $('#actionModalTitle').text(currentAction === 'accept' ? '审核通过' : '审核拒绝');
+                $('#actionModalIdLabel').text(currentId);
+                $('#actionModalBody').text(`确定要${currentAction === 'accept' ? '通过' : '拒绝'}此用户？`);
+                $('#confirmActionBtn')
+                    .text(currentAction === 'accept' ? '审核通过' : '审核拒绝')
+                    .toggleClass('btn-primary', currentAction === 'accept')
+                    .toggleClass('btn-danger', currentAction === 'refuse');
+
+                $('#actionModal').modal('show');
+            });
+
+            // 确认操作
+            $('#confirmActionBtn').on('click', function () {
+                const data = {
+                    id: currentId,
+                    action: currentAction  // 告诉后端是“通过”还是“拒绝”
+                };
+
+                fetch('/home/registration_assessment/edit', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                })
+                    .then(response => response.json())
+                    .then(result => {
+                        alert(result.status === 'success' ? '操作成功' : '操作失败: ' + result.message);
+                        location.reload();
+                    })
+                    .catch(error => {
+                        console.error('提交失败', error);
+                    });
+
+                $('#actionModal').modal('hide');
+            });
+        });
+        //格式限制
+        document.addEventListener('DOMContentLoaded', function () {
+            new Cleave('#room_text', {
+                blocks: [3, 3, 0],
+                delimiters: ['栋', '室'],  // 插入中文分隔符
+                numericOnly: true,      // 只允许输入数字
+                uppercase: true        // 自动转大写（对中文不影响）
+            });
+            new Cleave('#area_text', {
+                numeral: true,
+                numeralDecimalScale: 2,  // 允许2位小数
+                numeralPositiveOnly: true,
+                numeralThousandsGroupStyle: 'none',
+                noImmediatePrefix: true,
+
+                onValueChanged: function (e) {
+                    const input = e.target;
+                    const rawValue = parseFloat(input.rawValue) || 0;
+
+                    // 范围限制 (50-400)
+                    if (rawValue > 0) {
+                        if (rawValue < 50) {
+                            input.value = '50 平方米';
+                        } else if (rawValue > 400) {
+                            input.value = '400 平方米';
+                        } else {
+                            input.value = input.rawValue + ' 平方米';
+                        }
+                    } else {
+                        input.value = '';
+                    }
+
+                    // 特殊处理退格键
+                    if (e.detail && e.detail.inputType === 'deleteContentBackward') {
+                        if (input.value === ' 平方米') {
+                            input.value = '';
+                        }
+                    }
+                },
+                // 初始化后立即添加单位（如果已有值）
+                init: function () {
+                    if (this.element.value && !this.element.value.includes('平方米')) {
+                        this.element.value = this.element.value + ' 平方米';
+                    }
+                }
+            });
+            new Cleave('#telephone_text', {
+                delimiters: ['-', '-'],
+                blocks: [3, 4, 4],
+                numericOnly: true
+            });
+            new Cleave('#idCard_text', {
+                delimiters: ['-', '-', '-'],
+                blocks: [6, 4, 4, 4],
+                numericOnly: true
+            });
+        });
+        //验证姓名
+        document.getElementById('name_text').addEventListener('input', function (e) {
+            const input = e.target;
+            input.value = input.value.replace(/[^\u4e00-\u9fa5]/g, '').substring(0, 3);
+        });
+        //表单提交
+        document.getElementById('addUser').addEventListener('submit', addUserSubmit);
+
+        async function addUserSubmit(e) {
+            e.preventDefault();
+            const form = e.target;
+            const roleSelect = form.querySelector('#selectType');
+            const propertySelect = form.querySelector('#selectProperty');
+            const formData = {
+                username: form.querySelector('#email_text').value,
+                password: form.querySelector('#password_text').value,
+                name: form.querySelector('#name_text').value,
+                role: roleSelect.value,
+                room: form.querySelector('#room_text').value,
+                telephone: form.querySelector('#telephone_text').value,
+                idcard: form.querySelector('#idCard_text').value,
+                Area: form.querySelector('#area_text').value,
+                PropertyType: propertySelect.value
+            };
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(formData)
+                });
+                const result = await response.json();
+                showAlert(result.success ? 'success' : 'danger', result.message);
+                window.setTimeout(function () {
+                    window.location.reload();
+                }, 3000)
+            } catch (error) {
+                showAlert('danger', '网络错误，请重试');
+                window.setTimeout(function () {
+                    window.location.reload();
+                }, 3000)
+            }
+        }
+
+        function showAlert(type, message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} fixed-top mx-auto mt-3 w-50`;
+            alertDiv.textContent = message;
+            document.body.appendChild(alertDiv);
+            setTimeout(() => alertDiv.remove(), 3000);
+        }
+    </script>
+    <!-- 通用模态框 -->
+    <div class="modal fade" id="actionModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="actionModalTitle">操作确认</h5>
+                    <label class="modal-title" id="actionModalIdLabel"></label>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="actionModalBody">
+                    确定要执行此操作？
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" id="confirmActionBtn">确认</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 成功弹窗 -->
+
+    {#    加载顺序必须是：先 jQuery → 后 Bootstrap JS。#}
+    {#    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>#}
+    {#    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>#}
+    {#    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>#}
+    {#    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>#}
+{% endblock %}

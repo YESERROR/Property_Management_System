@@ -1,0 +1,289 @@
+{% extends 'base.html' %}
+{% block title %}物业管理-个人中心{% endblock %}
+{% block content %}
+    <div class="adminx-content">
+        <div class="adminx-main-content">
+            <div class="container-fluid">
+                <!-- BreadCrumb -->
+                <nav aria-label="breadcrumb" role="navigation">
+                    <ol class="breadcrumb adminx-page-breadcrumb">
+                        <li class="breadcrumb-item"><a href="/home">总览</a></li>
+                        <li class="breadcrumb-item active  aria-current=page">个人用户设置</li>
+                    </ol>
+                </nav>
+
+                <div class="pb-3">
+                    <h1>个人设置</h1>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card mb-grid">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <div class="card-header-title" style="font-size:1em;">用户信息更改</div>
+
+                                <nav class="card-header-actions">
+                                    <a class="card-header-action" data-toggle="collapse" href="#card1"
+                                       aria-expanded="false" aria-controls="card1">
+                                        <i data-feather="minus-circle"></i>
+                                    </a>
+
+                                    <div class="dropdown">
+                                        <a class="card-header-action" href="#" role="button" id="card1Settings"
+                                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i data-feather="settings"></i>
+                                        </a>
+
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="card1Settings">
+                                            <a class="dropdown-item" href="#">Action</a>
+                                            <a class="dropdown-item" href="#">Another action</a>
+                                            <a class="dropdown-item" href="#">Something else here</a>
+                                        </div>
+                                    </div>
+
+                                    <a href="#" class="card-header-action">
+                                        <i data-feather="x-circle"></i>
+                                    </a>
+                                </nav>
+                            </div>
+                            <div class="card-body collapse show" id="card1">
+                                <form id="person" action="/home/personal_user/change_user">
+                                    <div class="form-group">
+                                        <label class="form-label" for="id1"
+                                               style="font-size: 1rem">您的系统id号：</label>
+                                        <input type="number" class="form-control" id="id1"
+                                               aria-describedby="idHelp" placeholder="{{ id }}"
+                                               value="{{ emile }}" readonly required>
+                                        <small id="idHelp"
+                                               class="form-text text-muted">由系统生成，不可更改</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="exampleInputEmail1">邮箱地址</label>
+                                        <input type="email" class="form-control" id="exampleInputEmail1"
+                                               aria-describedby="emailHelp" placeholder="Enter email"
+                                               value="{{ emile }}" required>
+                                        <small id="emailHelp"
+                                               class="form-text text-muted">邮箱同时也是你的用户名</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="exampleInputPassword1">密码</label>
+                                        <input type="password" class="form-control" id="exampleInputPassword1"
+                                               placeholder="Password" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">提交</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="card mb-grid">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <div class="card-header-title" style="font-size:1em;">详细信息填写</div>
+
+                                <nav class="card-header-actions">
+                                    <a class="card-header-action" data-toggle="collapse" href="#card2"
+                                       aria-expanded="false" aria-controls="card1">
+                                        <i data-feather="minus-circle"></i>
+                                    </a>
+
+                                    <div class="dropdown">
+                                        <a class="card-header-action" href="#" role="button" id="card1Settings"
+                                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i data-feather="settings"></i>
+                                        </a>
+
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="card1Settings">
+                                            <a class="dropdown-item" href="#">Action</a>
+                                            <a class="dropdown-item" href="#">Another action</a>
+                                            <a class="dropdown-item" href="#">Something else here</a>
+                                        </div>
+                                    </div>
+
+                                    <a href="#" class="card-header-action">
+                                        <i data-feather="x-circle"></i>
+                                    </a>
+                                </nav>
+                            </div>
+                            <div class="card-body collapse show" id="card2">
+                                <form id="info" action="/home/personal_user/change_person">
+                                    <div class="form-group">
+                                        <label class="form-label" for="name">真实姓名</label>
+                                        <input type="text" class="form-control" id="name"
+                                               pattern="^[\u4e00-\u9fa5]{2,5}$" value="{{ name }}" required>
+                                        <small id="name"
+                                               class="form-text text-muted">长度大于2个中文字符</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="room">房间号</label>
+                                        <input type="text" class="form-control" id="room"
+                                               aria-describedby="roomHelp" placeholder="xxx栋xxx室" value="{{ room }}"
+                                               required>
+                                        <small id="roomHelp" class="form-text text-muted">xxx栋xxx室</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="area">面积</label>
+                                        <input type="text" class="form-control" id="area"
+                                               placeholder="xxx" value="{{ Area }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="telephone">手机号</label>
+                                        <input type="tel" class="form-control" id="telephone"
+                                               placeholder="xxx-xxxx-xxxx" value="{{ telephone }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="idcard">身份证</label>
+                                        <input type="tel" class="form-control" id="idcard"
+                                               placeholder="xxxxxx-xxxx-xxxx-xxxx" value="{{ id_card }}" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">提交</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block div_out %}
+    {#    <script src="/static/js/jquery-3.2.1.min.js"></script>#}
+    <!-- 先加载 jQuery -->
+    <script src="/static/js/jquery.validate.js"></script>
+
+    <!-- 再加载 jQuery Validation 插件 -->
+    <script src="/static/js/cleave.min.js"></script>
+    <script>
+        //格式限制
+        document.addEventListener('DOMContentLoaded', function () {
+            new Cleave('#room', {
+                blocks: [3, 3, 0],
+                delimiters: ['栋', '室'],  // 插入中文分隔符
+                numericOnly: true,      // 只允许输入数字
+                uppercase: true        // 自动转大写（对中文不影响）
+            });
+            new Cleave('#area', {
+                numeral: true,
+                numeralThousandsGroupStyle: 'none', // 禁用千分位分隔
+                prefix: '',                        // 初始无前缀
+                suffix: ' 平方米',                 // 自动添加单位
+                noImmediatePrefix: true,           // 输入时不立即显示单位
+                onValueChanged: function (e) {
+                    // 当值为空时移除单位
+                    if (e.target.rawValue === '') {
+                        e.target.value = '';
+                    }
+                }});
+            new Cleave('#telephone', {
+                delimiters: ['-', '-'],
+                blocks: [3, 4, 4],
+                numericOnly: true
+            });
+            new Cleave('#idcard', {
+                delimiters: ['-', '-', '-'],
+                blocks: [6, 4, 4, 4],
+                numericOnly: true
+            });
+        });
+            {#$.validator.addMethod("nameFormat", function (value, element) {#}
+            {#    return this.optional(element) || /^[\u4e00-\u9fa5]{2,}$/.test(value);#}
+            {# }, "请输入纯中文且长度大于2"); #}
+
+            // 应用到表单中
+            $("#info").validate({
+                rules: {
+                    name: {
+                        required: true,
+                        nameFormat: true
+                    }
+                },
+                messages: {
+                    name: {
+                        required: "姓名不能为空",
+                        nameFormat: "请输入纯中文且长度大于2"
+                    }
+                }
+            });
+            //格式限制
+
+
+            document.getElementById('person').addEventListener('submit', handlePersonFormSubmit);
+            document.getElementById('info').addEventListener('submit', handleInfoFormSubmit);
+
+            async function handlePersonFormSubmit(e) {
+                e.preventDefault();
+                const form = e.target;
+                const formData = {
+                    id: {{ id }},
+                    email: form.querySelector('#exampleInputEmail1').value,
+                    password: form.querySelector('#exampleInputPassword1').value
+                };
+
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(formData)
+                    });
+                    const result = await response.json();
+                    showAlert(result.success ? 'success' : 'danger', result.message);
+                    if (result.success) form.reset();
+                    window.setTimeout(function () {
+                        window.location.reload();
+                    },3000)
+                } catch (error) {
+                    showAlert('danger', '网络错误，请重试');
+                    window.setTimeout(function () {
+                        window.location.reload();
+                    },3000)
+                }
+            }
+
+            // 处理个人信息表单
+            async function handleInfoFormSubmit(e) {
+                e.preventDefault();
+                const form = e.target;
+                const formData = {
+                    id: {{ id }},
+                    name: form.querySelector('#name').value,
+                    room: form.querySelector('#room').value,
+                    telephone: form.querySelector('#telephone').value,
+                    idcard: form.querySelector('#idcard').value,
+                    Area: form.querySelector('#area').value
+                };
+
+                // 前端验证示例：检查中文姓名
+                {#if (!/^[\u4e00-\u9fa5]{2,5}$/.test(formData.name)) {#}
+                {#    return showAlert('danger', '姓名必须是2-5个中文字符');#}
+                {# }#}
+
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(formData)
+                    });
+                    const result = await response.json();
+                    showAlert(result.success ? 'success' : 'danger', result.message);
+                    window.setTimeout(function () {
+                        window.location.reload();
+                    },3000)
+                } catch (error) {
+                    showAlert('danger', '网络错误，请重试');
+                    window.setTimeout(function () {
+                        window.location.reload();
+                    },3000)
+                }
+            }
+
+            // 显示提示消息（可用Toast替代）
+            function showAlert(type, message) {
+                const alertDiv = document.createElement('div');
+                alertDiv.className = `alert alert-${type} fixed-top mx-auto mt-3 w-50`;
+                alertDiv.textContent = message;
+                document.body.appendChild(alertDiv);
+                setTimeout(() => alertDiv.remove(), 3000);
+            }
+    </script>
+
+{% endblock %}

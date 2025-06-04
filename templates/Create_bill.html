@@ -1,0 +1,293 @@
+{% extends 'base.html' %}
+{% block title %}物业管理-创建账单{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <nav aria-label="breadcrumb" role="navigation">
+            <ol class="breadcrumb adminx-page-breadcrumb">
+                <li class="breadcrumb-item"><a href="/home">主页</a></li>
+                <li class="breadcrumb-item"><a href="#">资产管理</a></li>
+                <li class="breadcrumb-item active  aria-current=page">发布账单</li>
+            </ol>
+        </nav>
+
+        <div class="pb-3">
+            <h1>发布账单</h1>
+        </div>
+        <div class="card mb-grid">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-header-title">创建账单</div>
+
+                <nav class="card-header-actions">
+                    <a class="card-header-action" data-toggle="collapse" href="#card1" aria-expanded="false"
+                       aria-controls="card1">
+                        <i data-feather="minus-circle"></i>
+                    </a>
+
+                    <div class="dropdown">
+                        <a class="card-header-action" href="#" role="button" id="card1Settings"
+                           data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                        </a>
+                    </div>
+
+                    <a href="#" class="card-header-action">
+                        <i data-feather="x-circle"></i>
+                    </a>
+                </nav>
+            </div>
+            <div class="card-body collapse show" id="card1">
+                <form id="billForm" action="/home/createbill/push" method="post">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-label" for="selectBill">选择收费账单</label>
+                                <select name="select" class="form-control js-choice" id="selectBill">
+                                    {% for Fee_bill in Fee_bills %}
+                                        <option value="{{ Fee_bill.StandardID }}">{{ Fee_bill.Property_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="deadline">截至日期</label>
+                                <input type="date" class="form-control mb-2 date-default" id="deadline">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="fee_cycle">收费周期</label>
+                                <input type="date" class="form-control mb-2 date-default" id="fee_cycle">
+                            </div>
+                            <button type="submit" class="btn btn-primary">发布</button>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-label" for="Type_of_Charge">收费类型</label>
+                                <input type="text" class="form-control" id="Type_of_Charge" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="rate">确认单价</label>
+                                <input type="text" class="form-control" id="rate" aria-describedby="rateHelp" readonly>
+                                <small id="rateHelp" class="form-text text-muted">元/月</small>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="Property_Type">收费对象</label>
+                                <select id="Property_Type" name="Property_Type" class="form-control js-choice">房产类型
+                                    <option value="住宅">住宅</option>
+                                    <option value="商铺">商铺</option>
+                                    <option value="车位">车位</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="pb-3">
+            <h1>查看已有账单</h1>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card mb-grid">
+                    <div class="table-responsive-md">
+                        <table class="table table-actions table-striped table-hover mb-0" data-table>
+                            <thead>
+                            <tr>
+                                <th scope="col">
+                                    <label class="custom-control custom-checkbox m-0 p-0">
+                                        <input type="checkbox" class="custom-control-input table-select-all">
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </th>
+                                <th scope="col">账单id</th>
+                                <th scope="col">用户id</th>
+                                <th scope="col">真实姓名</th>
+                                <th scope="col">计费周期</th>
+                                <th scope="col">总金额</th>
+                                <th scope="col">状态</th>
+                                <th scope="col">生成日期</th>
+                                <th scope="col">缴费截止日期</th>
+                                <th scope="col">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for bill in bills %}
+                                <tr>
+                                    <th scope="row">
+                                        <label class="custom-control custom-checkbox m-0 p-0">
+                                            <input type="checkbox" class="custom-control-input table-select-row">
+                                            <span class="custom-control-indicator"></span>
+                                        </label>
+                                    </th>
+                                    <td>{{ bill.BillID }}</td>
+                                    <td>{{ bill.PersonID }}</td>
+                                    <td>{{ bill.user.username }}</td>
+                                    <td>{{ bill.BillingCycle }}</td>
+                                    <td>{{ bill.TotalAmount }}</td>
+                                    <td>{{ bill.Status }}</td>
+                                    <td>{{ bill.GenerateDate }}</td>
+                                    <td>
+                                        {% set now = datetime.date.today() %}
+                                        {#                                    {% set start=datetime.datetime.strptime(bill.StartDate,'%Y-%m-%d') %}#}
+                                        {#                                    {% set end=datetime.datetime.strptime(bill.EndDate,'%Y-%m-%d') %}#}
+                                        {% if now<=bill.DueDate %}
+                                            <span class="badge badge-pill badge-primary ">有效</span>
+                                        {% else %}
+                                            <span class="badge badge-pill badge-danger  ">过期</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-danger">删除</button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block div_out %}
+    <!-- 加载动画 (初始隐藏) -->
+    <!-- 进度条弹窗容器 -->
+    <div id="progressModal" class="modal fade" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">处理中...</h5>
+                </div>
+                <div class="modal-body">
+                    <!-- 进度条 -->
+                    <div class="progress" style="height: 25px;">
+                        <div id="modalProgressBar"
+                             class="progress-bar progress-bar-striped progress-bar-animated"
+                             role="progressbar"
+                             style="width: 0%"
+                             aria-valuenow="0"
+                             aria-valuemin="0"
+                             aria-valuemax="100">
+                            <span id="progressText">0%</span>
+                        </div>
+                    </div>
+                    <div id="statusMessage" class="mt-2 text-muted">正在初始化...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $('#selectBill').change(function () {
+            const billId = $(this).val();
+            const $chargeType = $('#Type_of_Charge');
+            const $rate = $('#rate');
+            const $progressBar = $('.progress-bar'); // 获取进度条元素
+
+            if (billId) {
+                // 重置表单并显示进度条
+                $chargeType.val('');
+                $rate.val('');
+                $progressBar
+                    .css('width', '0%')
+                    .attr('aria-valuenow', 0)
+                    .removeClass('d-none');
+
+                // 模拟进度更新（实际开发中可根据上传/下载进度调整）
+                const progressInterval = setInterval(() => {
+                    const currentWidth = parseInt($progressBar.css('width'));
+                    if (currentWidth < 90) {
+                        const newWidth = currentWidth + 10;
+                        $progressBar
+                            .css('width', newWidth + '%')
+                            .attr('aria-valuenow', newWidth);
+                    }
+                }, 300);
+
+                // AJAX请求
+                $.ajax({
+                    url: '/home/createbill/search',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({bill_id: billId}),
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+                    },
+                    xhr: function () {
+                        // 获取原生XHR对象
+                        const xhr = new window.XMLHttpRequest();
+
+                        // 监听进度事件（如果需要真实进度）
+                        xhr.addEventListener('progress', function (evt) {
+                            if (evt.lengthComputable) {
+                                const percentComplete = (evt.loaded / evt.total) * 100;
+                                $progressBar
+                                    .css('width', percentComplete + '%')
+                                    .attr('aria-valuenow', percentComplete);
+                            }
+                        });
+
+                        return xhr;
+                    },
+                    success: function (data) {
+                        // 请求完成时进度条满
+                        $progressBar
+                            .css('width', '100%')
+                            .attr('aria-valuenow', 100);
+
+                        $chargeType.val(data.charge_type);
+                        $rate.val(data.rate);
+                    },
+                    error: function (xhr) {
+                        // 错误时变红色
+                        $progressBar
+                            .removeClass('bg-success')
+                            .addClass('bg-danger');
+                        alert('错误: ' + xhr.responseJSON?.error || '未知错误');
+                    },
+                    complete: function () {
+                        clearInterval(progressInterval);
+                        setTimeout(() => {
+                            $progressBar.addClass('d-none');
+                        }, 500); // 延迟隐藏让用户看到完成状态
+                    }
+                });
+            } else {
+                $chargeType.val('');
+                $rate.val('');
+            }
+        });
+
+
+        document.getElementById('billForm').addEventListener('submit', billFormSubmit);
+
+        async function billFormSubmit(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = {
+                selectBill: form.querySelector('#selectBill').value,//选择账单
+                deadline: form.querySelector('#deadline').value,//截至时间
+                fee_cycle: form.querySelector('#fee_cycle').value,//收费周期
+                Property_Type: form.querySelector('#Property_Type').value//收费对象
+            };
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(formData)
+                });
+                const result = await response.json();
+                showAlert(result.success ? 'success' : 'danger', result.message);
+                if (result.success) form.reset();
+            } catch (error) {
+                showAlert('danger', '网络错误，请重试');
+            }
+        }
+
+        function showAlert(type, message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} fixed-top mx-auto mt-3 w-50`;
+            alertDiv.textContent = message;
+            document.body.appendChild(alertDiv);
+            setTimeout(() => alertDiv.remove(), 3000);
+        }
+    </script>
+{% endblock %}
