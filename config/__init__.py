@@ -67,6 +67,16 @@ class AppConfig:
     def config(self):
         return self._config
 
+    @property
+    def pyodbc_config(self):
+        db_config_SqlServer = self._config['database']['sqlserver']
+        return (f"DRIVER={{ODBC Driver 17 for SQL Server}};"
+            f"SERVER={db_config_SqlServer['server']},{1433};"
+            f"DATABASE={db_config_SqlServer['database']};"
+            f"UID={db_config_SqlServer['username']};"
+            f"PWD={db_config_SqlServer['password']};"
+            "TrustServerCertificate=yes;"
+                )
 
 config = AppConfig()
 
@@ -79,3 +89,7 @@ def get_JWT_cookie_config() -> str:
 def get_database_config() -> str:
     """<UNK>DB<UNK>"""
     return config.config['database']['default']
+
+def get_pyodbc_config() -> str:
+    """<UNK>DB<UNK>"""
+    return config.pyodbc_config
